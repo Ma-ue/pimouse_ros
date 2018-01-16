@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #encoding:utf8
 import unittest, rostest
-import rosnode, ropy
+import rosnode, rospy
 import time
 from pimouse_ros.msg import LightSensorValues
 
