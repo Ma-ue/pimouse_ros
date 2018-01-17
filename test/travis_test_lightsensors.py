@@ -1,14 +1,14 @@
 #!/usr/bin/env python
 #encoding:utf8
 import unittest, rostest
-import rosnode, ropy
+import rosnode, rospy
 import time
 from pimouse_ros.msg import LightSensorValues
 
 class LightsensorTest(unittest.TestCase):
 	def setUp(self):
 		self.count = 0
-		rospy.Subscriber('/lightsensor', LightSensorValues, self.callback)
+		rospy.Subscriber('/lightsensors', LightSensorValues, self.callback)
 		self.values = LightSensorValues()
 
 	def callback(self, data):
@@ -29,10 +29,10 @@ class LightsensorTest(unittest.TestCase):
 		self.assertIn('/lightsensors',nodes, "node does not exist")
 
 	def test_get_value(self):
-		rospy.set_oaram('lightsensors_freq', 10)
+		rospy.set_param('lightsensors_freq', 10)
 		time.sleep(2)
 		with open("/dev/rtlightsensor0", "w") as f:
-			f.write(" -1 - 123 4321\n")
+			f.write(" -1 0 123 4321\n")
 
 		time.sleep(3)
 
@@ -40,7 +40,7 @@ class LightsensorTest(unittest.TestCase):
 		self.check_values(4321, 123, 0, -1)
 
 	def test_change_parameter(self):
-		rospy.set_param('lightsensors_freq', 10)
+		rospy.set_param('lightsensors_freq', 1)
 		time.sleep(2)
 		c_prev = self.count
 		time.sleep(3)
@@ -50,5 +50,5 @@ class LightsensorTest(unittest.TestCase):
 
 if __name__ == '__main__':
 	time.sleep(3)
-	rospy.initi_node('travis_test_lightsensors')
+	rospy.init_node('travis_test_lightsensors')
 	rostest.rosrun('pimouse_ros', 'travis_test_lightsensors', LightsensorTest)
