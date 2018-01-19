@@ -1,0 +1,6 @@
+Uint16[] freqs
+float32[] durations
+---
+bool finished
+---
+uinit32 remaining_steps
