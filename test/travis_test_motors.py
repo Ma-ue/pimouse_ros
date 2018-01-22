@@ -16,7 +16,7 @@ class MotorTest(unittest.TestCase):
 		on = rospy.ServiceProxy('/motor_on', Trigger)
 		ret = on()
 
-	def file__chexk(self,dev,value,message):
+	def file_check(self,dev,value,message):
 		with open("/dev/" + dev, "r") as f:
 			self.assertEqual(f.readlin(), str(value)+"\n", message)
 
@@ -58,6 +58,13 @@ class MotorTest(unittest.TestCase):
 		self.assertEqual(ret.success, True, "motor off does not succeeded")
 		self.assertEqual(ret.message, "OFF", "motor off wrong message")
 		with open("/dev/rtmotoren0", "r") as f:
+			data = f.readline()
+			self.assertEqual(data, "0\n", "wrong value in rtmotor0 at motor off")
+		on = rospy.ServiceProxy('/motor_on', Trigger)
+		ret = on()
+		self.assertEqual(ret.success, True, "motor on does not succeeded")
+		self.assertEqual(ret.message, "ON", "motor ib wrong message")
+		with open("/dev/rtmotoren0","r") as f:
 			data = f.readline()
 			self.assertEqual(data, "1\n", "wrong value in rtmotor0 at motor on")
 
