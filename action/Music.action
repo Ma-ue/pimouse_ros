@@ -1,6 +1,6 @@
-Uint16[] freqs
+uint16[] freqs
 float32[] durations
 ---
 bool finished
 ---
-uinit32 remaining_steps
+uint32 remaining_steps
